@@ -1,5 +1,6 @@
 using CargoPay.Data;
 using CargoPay.Seeders;
+using CargoPay.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DbSource>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8, 0, 21))));
+
+builder.Services.AddSingleton(FeeService.Instance);
+builder.Services.AddHostedService<FeeUpdateService>();
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.AddAuthentication(options =>

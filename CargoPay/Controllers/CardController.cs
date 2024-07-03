@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using CargoPay.Services;
 
 namespace CargoPay.Controllers
 {
@@ -82,21 +83,24 @@ namespace CargoPay.Controllers
         [HttpPost("pay")]
         public async Task<IActionResult> Pay([FromBody] PaymentRequest request)
         {
-            var card = _context.Cards.SingleOrDefault(c => c.CardNumber == request.CardNumber);
+            Card? card = _context.Cards.SingleOrDefault(c => c.CardNumber == request.CardNumber);
             if (card == null)
             {
                 return NotFound("Card not found.");
             }
 
-            if (card.Balance < request.Amount)
+            double fee = FeeService.Instance.GetCurrentFee();
+            double totalAmount = request.Amount + fee;
+
+            if (card.Balance < totalAmount)
             {
                 return BadRequest("Insufficient balance.");
             }
 
-            card.Balance -= request.Amount;
+            card.Balance -= totalAmount;
             await _context.SaveChangesAsync();
 
-            return Ok(new { card.CardNumber, card.Balance });
+            return Ok(new { card.CardNumber, card.Balance, Fee = fee });
         }
 
     }
