@@ -18,11 +18,9 @@ namespace CargoPay.Services
         }
         private void UpdateFee(object state)
         {
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<DbSource>();
-                FeeService.Instance.UpdateFee(context);
-            }
+            using IServiceScope scope = _scopeFactory.CreateScope();
+            DbSource context = scope.ServiceProvider.GetRequiredService<DbSource>();
+            FeeService.Instance.UpdateFee(context);
         }
         public Task StopAsync(CancellationToken cancellationToken)
         {

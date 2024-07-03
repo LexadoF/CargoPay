@@ -47,7 +47,7 @@ namespace CargoPay.Controllers
         [HttpPost("addBalance")]
         public async Task<IActionResult> AddBalance([FromBody] BalanceRequest request)
         {
-            var card = _context.Cards.Single(c => c.CardNumber == request.CardNumber);
+            Card card = _context.Cards.Single(c => c.CardNumber == request.CardNumber);
             if (card == null)
             {
                 return NotFound("Card not found.");
@@ -68,7 +68,7 @@ namespace CargoPay.Controllers
         [HttpGet("getBalance/{cardNumber}")]
         public IActionResult GetBalance(string cardNumber)
         {
-            var card = _context.Cards.Single(c => c.CardNumber == cardNumber);
+            Card card = _context.Cards.Single(c => c.CardNumber == cardNumber);
             if (card == null)
             {
                 return NotFound("Card not found.");

@@ -19,7 +19,7 @@ namespace CargoPay.Services
 
         private void LoadInitialFee(DbSource context)
         {
-            var lastFee = context.Fees.OrderByDescending(f => f.Id).FirstOrDefault();
+            Fee? lastFee = context.Fees.OrderByDescending(f => f.Id).FirstOrDefault();
             currentFee = lastFee?.U_fee ?? 1.0;
         }
 
@@ -35,7 +35,7 @@ namespace CargoPay.Services
             double randomDecimal = random.NextDouble() * 2;
             currentFee *= randomDecimal;
 
-            var existingFee = context.Fees.FirstOrDefault();
+            Fee? existingFee = context.Fees.FirstOrDefault();
             if (existingFee != null)
             {
                 existingFee.U_fee = currentFee;
@@ -43,7 +43,7 @@ namespace CargoPay.Services
             }
             else
             {
-                var fee = new Fee { U_fee = currentFee };
+                Fee fee = new() { U_fee = currentFee };
                 context.Fees.Add(fee);
             }
 

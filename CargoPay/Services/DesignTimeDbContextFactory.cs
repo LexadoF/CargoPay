@@ -12,8 +12,8 @@ namespace CargoPay.Data
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var builder = new DbContextOptionsBuilder<DbSource>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            DbContextOptionsBuilder<DbSource> builder = new();
+            string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
             builder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)));
 

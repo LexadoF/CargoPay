@@ -33,7 +33,7 @@ namespace CargoPay.Controllers
                 return Unauthorized();
             }
 
-            var token = GenerateJwtToken(user);
+            string token = GenerateJwtToken(user);
             return Ok(new { Token = token });
         }
 
@@ -50,7 +50,7 @@ namespace CargoPay.Controllers
                 Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
