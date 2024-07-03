@@ -19,7 +19,7 @@ namespace CargoPay.Services
 
         private void LoadInitialFee(DbSource context)
         {
-            var lastFee = context.Fees.OrderByDescending(f => f.Id).First();
+            var lastFee = context.Fees.OrderByDescending(f => f.Id).FirstOrDefault();
             currentFee = lastFee?.U_fee ?? 1.0;
         }
 
