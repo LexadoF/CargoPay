@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using CargoPay.Data;
+﻿using CargoPay.Data;
 using CargoPay.Models;
 
 namespace CargoPay.Services
